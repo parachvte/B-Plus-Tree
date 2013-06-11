@@ -1,0 +1,43 @@
+BPlusTree: B+ Tree (in memory)
+
+project for dasebase class, June 2013
+
+Author : Ryan
+
+============================================
+
+5 files included:
+
+main.c
+
+	1. for test, see MainLoop(), xxx_test(), etc
+	
+	2. read data
+	
+	3. modify records on original record file so that you can check the changs
+
+BPlusTree.h, BPlusTree.c
+
+	Implement the B+ tree, node definitions, interfaces and some operations
+
+Makefile
+
+	using gcc to compiler the program
+
+gen.py
+
+	generate data for tests
+
+============================================
+
+on our test, the record format is (key, value) : (int, char*),
+
+which also is the same as format of leaves
+
+============================================
+
+the B+ Tree is all in memory, so the order of tree won't be very large
+
+for data set of 10^7 records, an order of not bigger than 100 is more effient
+
+============================================
