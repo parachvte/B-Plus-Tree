@@ -80,38 +80,38 @@ inline void Read_Data_And_Insert() {
 
 /** Modify (key, value) on data file */
 int File_Modify(int pos, int key, char *value) {
-	int old_key, old_len, len = strlen(value), i;
-	char old_value[12];
+    int old_key, old_len, len = strlen(value), i;
+    char old_value[12];
 
 	FILE* file = fopen(input_file, "r+");
-	fseek(file, pos, SEEK_SET);
-	fscanf(file, "%d %s", &old_key, old_value); // read old
+    fseek(file, pos, SEEK_SET);
+    fscanf(file, "%d %s", &old_key, old_value); // read old
 	old_len = strlen(old_value);
-	
+    
 	if (len > old_len) return false; // conflict
 	// rewrite
 	fseek(file, pos - ftell(file), SEEK_CUR); // return to previous position
 	fprintf(file, "%d\t%s", key, value);
 	for (i = len; i < old_len; i++) fprintf(file, " "); // space fill blanks
-	fclose(file);
+    fclose(file);
 	return true;
 }
 
 /** Delete (key, value) on data file */
 void File_Delete(int pos) {
-	int old_key, i;
-	char old_value[12];
+    int old_key, i;
+    char old_value[12];
 
 	FILE* file = fopen(input_file, "r+");
-	fseek(file, pos, SEEK_SET);
-	fscanf(file, "%d %s", &old_key, old_value); // read old
+    fseek(file, pos, SEEK_SET);
+    fscanf(file, "%d %s", &old_key, old_value); // read old
    	int end_pos = ftell(file);
 
 	printf("%d %d\n", pos, end_pos);
 	// rewrite
 	fseek(file, pos - end_pos, SEEK_CUR); // return to previous position
 	for (i = pos; i < end_pos; i++) fprintf(file, " "); // space fill blanks
-	fclose(file);
+    fclose(file);
 }
 
 /** Show Help */
@@ -132,7 +132,7 @@ void MainLoop() {
 	double start_time, end_time;
 	int built = false;
 
-	// Read data to buffer
+    // Read data to buffer
 	Read_Buffer(input_file);
 	// B+tree initialize
 	BPlusTree_Init();
@@ -151,7 +151,7 @@ void MainLoop() {
 				built = false;
 				validRecords = 0;
 				break;
-			}
+		    }
 			case 1: {
 				// Set Depth
 				printf("input depth: ");
@@ -229,22 +229,22 @@ void MainLoop() {
 				start_time = clock();
 				int pos = BPlusTree_Find(new_key);
 				if (pos != -1) { // found
-					if (File_Modify(pos, new_key, new_st)) { // file modify success
+                    if (File_Modify(pos, new_key, new_st)) { // file modify success
 						BPlusTree_Modify(new_key, value);
-						printf("Modify success.\n");
+                    	printf("Modify success.\n");
 					} else {
 						printf("Modify failed, the new value is too long to store in file\n");
 					}
 				} else {
-					printf("Modify failed, do not have the given key on B+tree.\n");
+                    printf("Modify failed, do not have the given key on B+tree.\n");
 				}
 				end_time = clock();
 				printf("Modify value on a key, costs %lf s\n", (end_time - start_time) / CLOCKS_PER_SEC);
 				break;
 			}
 			case 7: {
-				// Delete value on a key
-				printf("input key: ");
+			    // Delete value on a key
+			    printf("input key: ");
 				int key;
 				scanf("%d", &key);
 				start_time = clock();
@@ -258,7 +258,7 @@ void MainLoop() {
 				}
 				end_time = clock();
 				printf("Delete value on a key, costs %lf s\n", (end_time - start_time) / CLOCKS_PER_SEC);
-				break;
+			    break;
 			}
 			case 8: return;
 			default: break;

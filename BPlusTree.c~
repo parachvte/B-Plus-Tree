@@ -393,28 +393,28 @@ void BPlusTree_Query_Range(int l, int r) {
 
 /** Interface: Find the position of given key */
 int BPlusTree_Find(int key) {
-	BPlusTreeNode* Leaf = Find(key, false);
-	int i = Binary_Search(Leaf, key);
+    BPlusTreeNode* Leaf = Find(key, false);
+    int i = Binary_Search(Leaf, key);
 	if (Leaf->key[i] != key) return -1; // don't have this key
 	return Leaf->pos[i];
 }
 
 /** Interface: modify value on the given key */
 void BPlusTree_Modify(int key, void* value) {
-	BPlusTreeNode* Leaf = Find(key, false);
-	int i = Binary_Search(Leaf, key);
+    BPlusTreeNode* Leaf = Find(key, false);
+    int i = Binary_Search(Leaf, key);
 	if (Leaf->key[i] != key) return; // don't have this key
-	printf("Modify: key = %d, original value = %s, new value = %s\n", key, (char*)(Leaf->child[i]), (char*)(value));
+    printf("Modify: key = %d, original value = %s, new value = %s\n", key, (char*)(Leaf->child[i]), (char*)(value));
 	free(Leaf->child[i]);
-	Leaf->child[i] = value;
+    Leaf->child[i] = value;
 }
 
 /** Interface: delete value on the given key */
 void BPlusTree_Delete(int key) {
-	BPlusTreeNode* Leaf = Find(key, false);
-	int i = Binary_Search(Leaf, key);
+    BPlusTreeNode* Leaf = Find(key, false);
+    int i = Binary_Search(Leaf, key);
 	if (Leaf->key[i] != key) return; // don't have this key
-	printf("Delete: key = %d, original value = %s\n", key, (char*)(Leaf->child[i]));
+    printf("Delete: key = %d, original value = %s\n", key, (char*)(Leaf->child[i]));
    	Delete(Leaf, key); 
 }
 
