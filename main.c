@@ -114,6 +114,17 @@ void File_Delete(int pos) {
 	fclose(file);
 }
 
+/** Insert (key, value) on data file */
+int File_Insert(int new_key, char* new_st) {
+	FILE* file = fopen(input_file, "r+");
+	fseek(file, 0, SEEK_END);
+	int new_pos = ftell(file);
+
+	fprintf(file, "%d %s\n", new_key, new_st);
+	fclose(file);
+	return new_pos;
+}
+
 /** Show Help */
 void ShowHelp() {
 	printf("\nType your operation:\n");
@@ -125,7 +136,8 @@ void ShowHelp() {
 	printf("  5) Query on keys of range [l, r]\n");
 	printf("  6) Modify value on a key\n");
 	printf("  7) Delete value on a key\n");
-	printf("  8) Quit\n");
+	printf("  8) Insert new record\n");
+	printf("  9) Quit\n");
 }
 
 void MainLoop() {
@@ -260,7 +272,25 @@ void MainLoop() {
 				printf("Delete value on a key, costs %lf s\n", (end_time - start_time) / CLOCKS_PER_SEC);
 				break;
 			}
-			case 8: return;
+			case 8: {
+				printf("input (key, value): ");
+				scanf("%d %s", &new_key, new_st);
+				char* value = (char*)malloc(sizeof(char) * new_len);
+				strcpy(value, new_st);
+
+				int pos = BPlusTree_Find(new_key);
+				if (pos == -1) {
+					new_pos = File_Insert(new_key, new_st);
+					keys[key_num++] = new_key;
+					BPlusTree_Insert(new_key, new_pos, value);
+					validRecords++;
+					printf("Insert success.\n");
+				} else {
+					printf("Insert failed, the key already exist.\n");
+				}
+				break;
+			}
+			case 9: return;
 			default: break;
 		}
 	}
@@ -275,16 +305,16 @@ void delete_test();
 
 int main(int argc, char *argv[]) {
 	// set input_file, output_file
-	strcpy(input_file, "data/ex-data.txt");
+	strcpy(input_file, "data/small-data.txt");
 	strcpy(output_file, "data/out.txt");
 	if (argc == 2) strcpy(input_file, argv[1]);
 
 	// MainLoop (for presentation)
-	//MainLoop();
+	MainLoop();
 	
 	//build_test();
 	//query_key_test();
-	query_range_test();
+	//query_range_test();
 	//modify_test();
 	//delete_test();
 	return 0;
