@@ -18,5 +18,5 @@ on our test, the record format is (key, value) : (int, char*),
 which also is the same as format of leaves
 ============================================
 the B+ Tree is all in memory, so the order of tree won't be very large
-for data set of 10^7 records, an order of not bigger than 100 is more effient
+for data set of 10^7 records, an order of not bigger than 100 is more effcient.
 ============================================
